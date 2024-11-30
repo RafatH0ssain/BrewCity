@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2';
+
 const AddCoffee = () => {
     const handleAddCoffee = event => {
         event.preventDefault();
@@ -12,42 +14,63 @@ const AddCoffee = () => {
         const details = form.details.value;
         const photo = form.photo.value;
 
-        const newCoffee = {name, quantity, supplier, taste, category, details, photo};
+        const newCoffee = { name, quantity, supplier, taste, category, details, photo };
+        console.log(newCoffee);
+
+        fetch('http://localhost:5000/coffee', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(newCoffee)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                if(data.insertID) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'User added a drink sucecssfully',
+                        icon: 'success',
+                        confirmButtonText: 'Cool'
+                    })
+                }
+            })
     }
     return (
         <div>
             <h2 className="text-6xl py-10 mx-auto">Add Coffee</h2>
-            <form>
+            <form onSubmit={handleAddCoffee}>
                 <div className="gap-5 flex flex-col">
                     <label className="input input-bordered flex items-center gap-2">
                         Coffee Name
-                        <input type="text" className="grow" placeholder="Espresso" />
+                        <input name="name" type="text" className="grow" placeholder="Espresso" />
                     </label>
                     <label className="input input-bordered flex items-center gap-2">
                         Supplier
-                        <input type="text" className="grow" placeholder="Jane Doe" />
+                        <input name="supplier" type="text" className="grow" placeholder="Jane Doe" />
                     </label>
                     <label className="input input-bordered flex items-center gap-2">
                         Available Quantity
-                        <input type="number" className="grow"/>
+                        <input name="quantity" type="number" className="grow" />
                     </label>
                     <label className="input input-bordered flex items-center gap-2">
                         Taste
-                        <input type="text" className="grow"/>
+                        <input name="taste" type="text" className="grow" />
                     </label>
                     <label className="input input-bordered flex items-center gap-2">
                         Category
-                        <input type="text" className="grow"/>
+                        <input name="category" type="text" className="grow" />
                     </label>
                     <label className="input input-bordered flex items-center gap-2">
                         Details
-                        <input type="text" className="grow"/>
+                        <input name="details" type="text" className="grow" />
                     </label>
                     <label className="input input-bordered flex items-center gap-2">
                         Photo URL
-                        <input type="text" className="grow"/>
+                        <input id="photo" type="text" className="grow" />
                     </label>
-                    <button className="btn btn-wide">Wide</button>
+                    <input type="submit" value="Submit" className="btn btn-wide"/>
                 </div>
             </form>
         </div>

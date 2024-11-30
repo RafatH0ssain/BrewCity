@@ -12,15 +12,22 @@ import UpdateCoffee from './components/UpdateCoffee.jsx';
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App></App>,
+    element: <App />,
+    loader: async () => {
+      const response = await fetch('http://localhost:5000/coffee');
+      if (!response.ok) {
+        throw new Error("Failed to fetch coffee data");
+      }
+      return response.json(); // Ensure you return the data (like JSON)
+    }
   },
   {
     path: "addCoffee",
-    element: <AddCoffee/>,
+    element: <AddCoffee />,
   },
   {
     path: "updateCoffee",
-    element: <UpdateCoffee/>,
+    element: <UpdateCoffee />,
   }
 ]);
 
