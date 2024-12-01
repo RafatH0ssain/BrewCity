@@ -25,12 +25,12 @@ const UpdateCoffee = () => {
             headers: {
                 'content-type': 'application/json'
             },
-            body: JSON.stringify(newCoffee)
+            body: JSON.stringify(newCoffee),
         })
             .then(res => res.json())
             .then(data => {
                 console.log(data);
-                if (data.insertID) {
+                if (data.modifiedCount > 0) {
                     Swal.fire({
                         title: 'Success!',
                         text: 'Coffee updated sucecssfully',
